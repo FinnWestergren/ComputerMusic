@@ -1,9 +1,11 @@
+import Orbit.OrbitManager;
+
 public class Main {
 	
 	/**
 	 * ---------------------------------------------------------------
 	 * Finn Westergren 
-	 * Independent Study: Computer Music
+	 * Independent Study on Computer Music
 	 * Spring 2018 
 	 * Skidmore College
 	 * ----------------------------------------------------------------
@@ -22,7 +24,6 @@ public class Main {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
-		GraphicsControl.main(GraphicsControl.class.getName());
+		//GraphicsControl.main(GraphicsControl.class.getName());
 	}
-	
 }

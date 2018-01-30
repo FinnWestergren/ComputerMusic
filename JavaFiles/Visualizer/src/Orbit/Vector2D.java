@@ -39,9 +39,9 @@ public class Vector2D {
 
   // Sum of two vectors ....
 
-  public Vector2D add( Vector2D v1 ) {
-      Vector2D v2 = new Vector2D( this.dX + v1.dX, this.dY + v1.dY );
-      return v2;
+  public void add( Vector2D v1 ) {
+       this.dX += v1.dX; 
+       this.dY += v1.dY;
   }
 
   // Subtract vector v1 from v .....
@@ -76,24 +76,5 @@ public class Vector2D {
 
   public double dotProduct ( Vector2D v1 ) {
        return this.dX*v1.dX + this.dY*v1.dY;
-  }
-
-  // Exercise methods in Vector2D class
-
-  public static void main ( String args[] ) {
-     Vector2D vA = new Vector2D( 1.0, 2.0);
-     Vector2D vB = new Vector2D( 2.0, 2.0);
-     
-     System.out.println( "Vector vA =" + vA.toString() );
-     System.out.println( "Vector vB =" + vB.toString() );
-
-     System.out.println( "Vector vA-vB =" + vA.sub(vB).toString() );
-     System.out.println( "Vector vB-vA =" + vB.sub(vA).toString() );
-
-     System.out.println( "vA.normalize() =" + vA.normalize().toString() );
-     System.out.println( "vB.normalize() =" + vB.normalize().toString() );
-
-     System.out.println( "Dot product vA.vB =" + vA.dotProduct(vB) );
-     System.out.println( "Dot product vB.vA =" + vB.dotProduct(vA) );
   }
 }
