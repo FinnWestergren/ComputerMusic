@@ -1,4 +1,5 @@
-import Orbit.OrbitManager;
+package Managers;
+import Orbit.OrbitalSystem;
 
 public class Main {
 	
@@ -24,6 +25,9 @@ public class Main {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
-		//GraphicsControl.main(GraphicsControl.class.getName());
+		GraphicsManager.main(GraphicsManager.class.getName());
+		OrbitalSystem o = new OrbitalSystem();
+		o.addOrbit(100, 440);
+		OrbitalSystemManager.addSystem(o);
 	}
 }

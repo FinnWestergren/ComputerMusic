@@ -1,5 +1,7 @@
+package Managers;
 import processing.core.*;
-public class GraphicsControl extends PApplet{
+public class GraphicsManager extends PApplet{
+	
 	
 	
 	public void settings() {
@@ -11,7 +13,8 @@ public class GraphicsControl extends PApplet{
 	}
 	
 	public void draw() {
-		
+		fill(255);
+		rect(0,0,width,height);
 	}
 
 
