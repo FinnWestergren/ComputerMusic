@@ -12,7 +12,23 @@ import java.lang.Math;
 public class Vector2D {
 
   protected double dX;
-  protected double dY;
+  public double getdX() {
+	return dX;
+}
+
+public void setdX(double dX) {
+	this.dX = dX;
+}
+
+public double getdY() {
+	return dY;
+}
+
+public void setdY(double dY) {
+	this.dY = dY;
+}
+
+protected double dY;
 
   // Constructor methods ....
 

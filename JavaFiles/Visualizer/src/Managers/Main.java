@@ -17,17 +17,21 @@ public class Main {
 	 * I aim to make this shit clean.
 	 */
 	
-	static int displayWidth = 300;
-	static int displayHeight = 300;
+	static int displayWidth = 700;
+	static int displayHeight = 700;
 	
 	public static void main(String[] args) {
 		if(args.length != 0) {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
-		GraphicsManager.main(GraphicsManager.class.getName());
 		OrbitalSystem o = new OrbitalSystem();
-		o.addOrbit(100, 440);
+		o.addOrbit(100, 40);
+		o.addOrbit(100, 80);
+		o.addOrbit(100, 160.3);
+		
+//		o.addOrbit(6.25, 160);
 		OrbitalSystemManager.addSystem(o);
+		GraphicsManager.main(GraphicsManager.class.getName());
 	}
 }
