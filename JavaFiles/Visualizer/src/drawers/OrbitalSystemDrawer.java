@@ -4,7 +4,7 @@ import Orbit.OrbitalSystem;
 import Orbit.Vector2D;
 import processing.core.*;
 
-public class OrbitalSystemDrawer {
+public class OrbitalSystemDrawer implements Drawable{
 	
 	/*
 	 * Each OSD is dedicated to one orbital system. The reason I separated them from their respective OrbitalSystem is simply
@@ -13,21 +13,30 @@ public class OrbitalSystemDrawer {
 
 	private OrbitalSystem oSystem;
 	private PApplet p;
-
+	private Vector2D location;
+	
 	public OrbitalSystemDrawer(OrbitalSystem oSystem, PApplet p) {
 		this.oSystem = oSystem;
 		this.p = p;
 	}
+	
+	public OrbitalSystemDrawer(OrbitalSystem oSystem, PApplet p, Vector2D location) {
+		this.oSystem = oSystem;
+		this.p = p;
+		setLocation(location);
+	}
+	
+	
 
 	// draws the curve given by the control points given by the orbitalSystems
-	public void drawSpline(float centerX, float centerY) {
+	public void draw() {
 		p.pushMatrix();
-		p.translate(centerX, centerY);
+		p.translate((float)location.getdX(),(float)location.getdY());
 		p.smooth();
 		p.beginShape();
 
-		if (!oSystem.getControlPoints().isEmpty()) {
-			java.util.Iterator<Vector2D> iterator = oSystem.getControlPoints().iterator();
+		if (!oSystem.getPolarControlPoints().isEmpty()) {
+			java.util.Iterator<Vector2D> iterator = oSystem.getPolarControlPoints().iterator();
 			while (iterator.hasNext()) {
 				Vector2D v = iterator.next();
 				p.curveVertex((float) v.getdX(), (float) v.getdY());
@@ -39,6 +48,12 @@ public class OrbitalSystemDrawer {
 		}
 		p.endShape();
 		p.popMatrix();
+	}
+
+	@Override
+	public void setLocation(Vector2D location) {
+		this.location = location;
+		
 	}
 
 }

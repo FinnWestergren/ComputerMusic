@@ -21,7 +21,9 @@ public class OrbitalSystemManager {
 		int increment = (int) (frameRate * systemResolution);
 		for(int i =0; i < increment ; i ++)
 		for(OrbitalSystem o:systemList ) {
-			o.getNextControlPoint(frameRate * increment);
+			o.update(frameRate * increment);
+			o.getNextPolarControlPoint();
+			o.getNextCartesianControlPoint();
 		}
 	}
 }

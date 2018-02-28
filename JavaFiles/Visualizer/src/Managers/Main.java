@@ -1,4 +1,5 @@
 package Managers;
+import Orbit.Orbit;
 import Orbit.OrbitalSystem;
 
 public class Main {
@@ -14,10 +15,11 @@ public class Main {
 	 * I think this might be my last java project if I can help it. I'm tired of having to 
 	 * create a class for simple data tables. I wish that structs or aggregates were in play here. 
 	 * Nonetheless,
-	 * I aim to make this shit clean.
+	 * I intend to make this shit clean.
 	 */
 	
-	static int displayWidth = 700;
+	static int displayWidth = 1400;
+	
 	static int displayHeight = 700;
 	
 	public static void main(String[] args) {
@@ -25,10 +27,16 @@ public class Main {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
+		Orbit modulator = new Orbit(100,10);
 		OrbitalSystem o = new OrbitalSystem();
-		o.addOrbit(100, 40);
-		o.addOrbit(100, 80);
-		o.addOrbit(100, 160.3);
+		o.addOrbit(new Orbit(100, 25,modulator));
+		//o.addOrbit(new Orbit(100, 5));
+		//o.addOrbit(new Orbit(100,75.2));
+		//o.addOrbit(new Orbit(100, 75));
+		//o.addOrbit(new Orbit(100,150));
+		//o.addOrbit(new Orbit(100, 50, modulator));
+		//o.addOrbit(new Orbit(100, 70.4, modulator));
+		//o.addOrbit(new Orbit(100, 160));
 		
 //		o.addOrbit(6.25, 160);
 		OrbitalSystemManager.addSystem(o);
