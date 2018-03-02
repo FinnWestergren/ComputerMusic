@@ -1,23 +1,23 @@
-package Orbit;
-import drawers.Controller;
-public class Orbit {
+package calculations;
+import graphical_assests.Controller;
+public class SineWave {
 
 	private double radius, frequency;
-	private Orbit modulator = null;
+	private SineWave modulator = null;
 	private Controller freqController, radController;
 
-	public Orbit(Vector2D polarVect) {
+	public SineWave(Vector2D polarVect) {
 		this.radius = polarVect.dX;
 		this.frequency = polarVect.dY;
 	}
 
-	public Orbit(double radius, double frequency) {
+	public SineWave(double radius, double frequency) {
 		super();
 		this.radius = radius;
 		this.frequency = frequency;
 	}
 
-	public Orbit(double radius, double frequency, Orbit modulator) {
+	public SineWave(double radius, double frequency, SineWave modulator) {
 		super();
 		this.radius = radius;
 		this.frequency = frequency;
@@ -78,7 +78,7 @@ public class Orbit {
 		this.radController = c;
 	}
 
-	public Orbit getModulator() {
+	public SineWave getModulator() {
 		return modulator;
 	}
 

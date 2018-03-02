@@ -1,6 +1,6 @@
-package Managers;
-import Orbit.Orbit;
-import Orbit.OrbitalSystem;
+package main;
+import calculations.SineWave;
+import calculations.ComplexWave;
 
 public class Main {
 	
@@ -23,23 +23,12 @@ public class Main {
 	static int displayHeight = 700;
 	
 	public static void main(String[] args) {
+		
 		if(args.length != 0) {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
-		Orbit modulator = new Orbit(100,10);
-		OrbitalSystem o = new OrbitalSystem();
-		o.addOrbit(new Orbit(100, 25,modulator));
-		//o.addOrbit(new Orbit(100, 5));
-		//o.addOrbit(new Orbit(100,75.2));
-		//o.addOrbit(new Orbit(100, 75));
-		//o.addOrbit(new Orbit(100,150));
-		//o.addOrbit(new Orbit(100, 50, modulator));
-		//o.addOrbit(new Orbit(100, 70.4, modulator));
-		//o.addOrbit(new Orbit(100, 160));
+		GraphicsMain.main(GraphicsMain.class.getName());
 		
-//		o.addOrbit(6.25, 160);
-		OrbitalSystemManager.addSystem(o);
-		GraphicsManager.main(GraphicsManager.class.getName());
 	}
 }

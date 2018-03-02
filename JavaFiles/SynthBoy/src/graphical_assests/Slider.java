@@ -1,6 +1,6 @@
-package drawers;
+package graphical_assests;
 
-import Orbit.Vector2D;
+import calculations.Vector2D;
 import processing.core.PApplet;
 
 public class Slider implements Controller, Drawable {
@@ -57,8 +57,7 @@ public class Slider implements Controller, Drawable {
 
 	@Override
 	public Controller switchType() {
-		// TODO Auto-generated method stub
-		return null;
+		 return null;
 	}
 
 	@Override
@@ -70,6 +69,18 @@ public class Slider implements Controller, Drawable {
 	@Override
 	public void setLocation(Vector2D location) {
 		this.location = location;
+		
+	}
+
+	@Override
+	public void setHeight(float height) {
+		this.height = height;
+		
+	}
+
+	@Override
+	public void setWidth(float width) {
+		this.width = width;
 		
 	}
 }

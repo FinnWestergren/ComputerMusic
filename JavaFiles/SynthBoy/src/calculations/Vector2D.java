@@ -1,4 +1,4 @@
-package Orbit;
+package calculations;
 /** 
  *  ========================================================
  *  Vector2D.java: Source code for two-dimensional vectors
