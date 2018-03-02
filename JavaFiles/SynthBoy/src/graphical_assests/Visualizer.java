@@ -64,7 +64,6 @@ public class Visualizer implements Drawable {
 		p.translate((float) location.getdX(), (float) location.getdY());
 		p.smooth();
 		p.beginShape();
-		System.out.println(wavePoints.size());
 		// cartesian bullshit
 		if (!wavePoints.isEmpty()) {
 			for (Vector2D v : wavePoints) {
@@ -103,7 +102,7 @@ public class Visualizer implements Drawable {
 	public void cartesianPoints(int count, double currentTime, double rate) {
 		float separation = width / count;
 		for (int projectedTime = 0; projectedTime < count; projectedTime++) {
-			double y = complexWave.getPolarLocation(currentTime + projectedTime * rate).getdY();
+			double y = complexWave.getPolarLocation(currentTime + projectedTime * rate).scale(height/2).getdY();
 			if (wavePoints.size() > projectedTime) {
 				wavePoints.get(projectedTime).setdY(y);
 			} else {
@@ -116,7 +115,7 @@ public class Visualizer implements Drawable {
 	public void polarPoints(int count, double currentTime, double rate) {
 
 		for (int projectedTime = 0; projectedTime < count; projectedTime++) {
-			Vector2D v = complexWave.getPolarLocation(currentTime + projectedTime * rate);
+			Vector2D v = complexWave.getPolarLocation(currentTime + projectedTime * rate).scale(width/2);
 			if (wavePoints.size() > projectedTime) {
 				wavePoints.set(projectedTime, v);
 			} else {

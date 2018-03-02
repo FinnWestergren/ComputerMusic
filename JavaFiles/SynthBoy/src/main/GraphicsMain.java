@@ -1,6 +1,5 @@
 package main;
 
-
 import java.util.ArrayList;
 
 import calculations.ComplexWave;
@@ -9,17 +8,17 @@ import calculations.Vector2D;
 import graphical_assests.*;
 import processing.core.*;
 
-
 public class GraphicsMain extends PApplet {
-	
+
 	/*
-	 * Class for handling graphical output. Calls on Orbital System Manager for 
-	 * data to pass to each of its OrbitalSystemDrawers.
+	 * Class for handling graphical output. Calls on Orbital System Manager for data
+	 * to pass to each of its OrbitalSystemDrawers.
 	 */
-	
+
 	public ArrayList<Drawable> drawList;
 	public static final int FRAMERATE = 60;
 	Visualizer cD;
+	Slider s;
 
 	public void settings() {
 		size(Main.displayWidth / 2, Main.displayHeight);
@@ -29,23 +28,37 @@ public class GraphicsMain extends PApplet {
 		drawList = new ArrayList<Drawable>();
 		frameRate(FRAMERATE);
 		ComplexWave cW = new ComplexWave();
-		cW.addOrbit(new SineWave(100,120));
-		cW.addOrbit(new SineWave(100, 80));
-		cD = new Visualizer(cW,new Vector2D(width/2,height/2), VisualizerType.POLAR,200,40, this);
-		
+		SineWave m = new SineWave(10, 1);
+		SineWave o = new SineWave(50, 25,m);
+		cW.addOrbit(o);
+		//cW.addOrbit(new SineWave(100, 50));
+		cD = new Visualizer(cW, new Vector2D(width / 2, height / 2), VisualizerType.CARTESIAN, 500, 200, this);
+		s = new Slider("slide", "Hz", 0.1f, 25, true, false, 500, 20, new Vector2D(100, 100), this);
+		m.setRadiusController(s);
+	}
+
+	public void mousePressed() {
+		s.onMousePressed();
+	}
+
+	public void mouseReleased() {
+		s.onMouseReleased();
 	}
 
 	public void draw() {
-		cD.updatePoints(300, 0);
+
+		cD.updatePoints(500, 0);
 		fill(255);
+		stroke(0);
+		
 		rect(0, 0, width, height);
+		s.draw();
 		noFill();
-		stroke(1);
+		
+		text("FPS: " + (int) frameRate, 10, 10);
+		stroke(255,0,0);
+		strokeWeight(1.1f);
 		cD.draw();
-		for(Drawable d : drawList) {
-			d.draw();
-		}
-		fill(0);
-		text("FPS: " + (int)frameRate,10,10);
+		
 	}
 }

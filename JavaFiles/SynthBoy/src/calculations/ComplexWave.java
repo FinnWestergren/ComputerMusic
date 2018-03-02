@@ -5,18 +5,21 @@ import java.util.ArrayList;
 
 public class ComplexWave {
 	private ArrayList<SineWave> orbitList = new ArrayList<SineWave>();
-
+	private double minFreq = Double.MAX_VALUE;
+	private double maxAmp  = Double.MIN_NORMAL;
 	public ComplexWave() {
 	}
 
 	public void addOrbit(SineWave o) {
 		orbitList.add(o);
+		if(o.getFrequency() < minFreq) minFreq = o.getFrequency();
+		if(o.getRadius()> maxAmp) maxAmp = o.getFrequency();
 	}
 	
 	public Vector2D getPolarLocation(double time) {
 		Vector2D data = new Vector2D();
 		for (SineWave o : orbitList) {
-			data.add(o.getPolarLocation(time));
+			data.add(o.getPolarLocation(time).scale(1/(2.0*maxAmp)));
 		}
 		return data;
 	}
@@ -27,11 +30,6 @@ public class ComplexWave {
 	}
 
 	public double period() {
-		double minFreq = Double.MAX_VALUE;
-		for(SineWave o : orbitList) {
-			if(o.getFrequency() < minFreq) minFreq = o.getFrequency();
-		} 
-		
 		return 1/minFreq;
 	}
 
