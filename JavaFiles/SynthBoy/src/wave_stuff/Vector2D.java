@@ -1,4 +1,4 @@
-package calculations;
+package wave_stuff;
 /** 
  *  ========================================================
  *  Vector2D.java: Source code for two-dimensional vectors

@@ -1,4 +1,4 @@
-package calculations;
+package wave_stuff;
 import graphical_assests.Controller;
 public class SineWave {
 
@@ -34,8 +34,8 @@ public class SineWave {
 		double alphaT = Math.PI * 2 * time * getFrequency();
 		double modulation = 0;
 		if (modulator != null) {
-			double betaT = Math.PI * 2 * time * getFrequency();
-			modulation = modulator.getRadius() / modulator.getFrequency() * Math.sin(betaT);
+			double betaT = Math.PI * 2 * time * modulator.getFrequency();
+			modulation = (modulator.getRadius()/modulator.getFrequency() ) * Math.sin(betaT);
 		}
 
 		double dX = Math.cos(alphaT) * getRadius();
@@ -54,20 +54,6 @@ public class SineWave {
 		if(radController == null) 
 			return radius;
 			return radController.getCurrentValue();
-	}
-
-	public Vector2D getCartesianLocation(double time) {
-
-		double alphaT = Math.PI * 2 * time * getFrequency();
-		double modulation = 0;
-		if (modulator != null) {
-			double betaT = Math.PI * 2 * time * getFrequency();
-			modulation = modulator.getRadius() / modulator.getFrequency() * Math.sin(betaT);
-		}
-		double dX = time;
-		double dY = Math.sin(alphaT + modulation) * getRadius();
-		System.out.println((new Vector2D(dX, dY)).toString());
-		return new Vector2D(dX, dY);
 	}
 
 	public void setFrequencyController(Controller c) {

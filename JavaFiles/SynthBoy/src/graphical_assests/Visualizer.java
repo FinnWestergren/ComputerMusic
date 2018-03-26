@@ -1,19 +1,24 @@
 package graphical_assests;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import calculations.ComplexWave;
-import calculations.Vector2D;
 import processing.core.PApplet;
+import wave_stuff.ComplexWave;
+import wave_stuff.Vector2D;
 
-public class Visualizer implements Drawable {
+public class Visualizer implements Drawable, ActionListener {
 
 	protected ComplexWave complexWave;
 	protected PApplet p;
 	protected Vector2D location;
-	protected ArrayList<Vector2D> wavePoints = new ArrayList<Vector2D>();
-	protected float width, height;
+	protected Vector2D[] wavePoints;
+	protected float width, height; 
 	protected VisualizerType type;
+	private int resolution;
+	private long startTime;
+	private boolean firstUpdate = true;
 
 	/**
 	 * 
@@ -28,13 +33,16 @@ public class Visualizer implements Drawable {
 	 * @param p
 	 *            reference to the PApplet
 	 */
-	public Visualizer(ComplexWave compWave, Vector2D location, VisualizerType type, float width, float height,
+	public Visualizer(ComplexWave compWave, Vector2D location, VisualizerType type, float width, float height, int resolution,
 			PApplet p) {
 		this.p = p;
 		this.complexWave = compWave;
 		this.width = width;
 		this.height = height;
 		this.type = type;
+		this.wavePoints = new Vector2D[resolution];
+		this.resolution = resolution;
+		startTime = System.currentTimeMillis();
 		setLocation(location);
 	}
 
@@ -65,15 +73,11 @@ public class Visualizer implements Drawable {
 		p.smooth();
 		p.beginShape();
 		// cartesian bullshit
-		if (!wavePoints.isEmpty()) {
+		
 			for (Vector2D v : wavePoints) {
-				p.curveVertex((float) v.getdX(), (float) v.getdY());
+				if(!firstUpdate) p.curveVertex((float) v.getdX(), (float) v.getdY());
 			}
-		} else {
-			p.fill(0);
-			p.textAlign(p.CENTER);
-			p.text("Empty Set", 0, 0);
-		}
+		 
 		p.endShape();
 		p.popMatrix();
 	}
@@ -87,41 +91,54 @@ public class Visualizer implements Drawable {
 	 * @param rate
 	 *            time between collection in mS
 	 */
-	public void updatePoints(int count, double currentTime) {
-		double rate = complexWave.period() / (count);
-
+	@Override
+	public void update() {
+		double rate = complexWave.period() * 2 / (resolution);
 		switch (type) {
 		case POLAR:
-			polarPoints(count, currentTime, rate);
+			polarPoints(rate);
 			break;
 		case CARTESIAN:
-			cartesianPoints(count, currentTime, rate);
+			cartesianPoints(rate);
 		}
 	}
 
-	public void cartesianPoints(int count, double currentTime, double rate) {
-		float separation = width / count;
-		for (int projectedTime = 0; projectedTime < count; projectedTime++) {
-			double y = complexWave.getPolarLocation(currentTime + projectedTime * rate).scale(height/2).getdY();
-			if (wavePoints.size() > projectedTime) {
-				wavePoints.get(projectedTime).setdY(y);
-			} else {
+	/**
+	 * 
+	 * sets the location of the visual points 
+	 * 
+	 * @param count
+	 * @param currentTime
+	 * @param rate
+	 * 
+	 */
+	
+	public void cartesianPoints(double rate) {
+		float separation = width / resolution;
+		for (int projectedTime = 0; projectedTime < resolution; projectedTime++) {
+			double y = complexWave.getPolarLocation(System.currentTimeMillis() - startTime + projectedTime * rate).scale(height/2).getdY();
+			if (firstUpdate) {
 				double x = projectedTime * separation - width / 2;
-				wavePoints.add(new Vector2D(x, y));
+				wavePoints[projectedTime] = new Vector2D(x, y);
+				
+			} else {
+				wavePoints[projectedTime].setdY(y);
 			}
+		}
+		firstUpdate = false;
+	}
+
+	public void polarPoints( double rate) {
+		for (int projectedTime = 0; projectedTime < resolution; projectedTime++) {
+			Vector2D v = complexWave.getPolarLocation(System.currentTimeMillis() - startTime + projectedTime * rate).scale(width/2);
+			wavePoints[projectedTime] =  v;
 		}
 	}
 
-	public void polarPoints(int count, double currentTime, double rate) {
-
-		for (int projectedTime = 0; projectedTime < count; projectedTime++) {
-			Vector2D v = complexWave.getPolarLocation(currentTime + projectedTime * rate).scale(width/2);
-			if (wavePoints.size() > projectedTime) {
-				wavePoints.set(projectedTime, v);
-			} else {
-				wavePoints.add(v);
-			}
-		}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

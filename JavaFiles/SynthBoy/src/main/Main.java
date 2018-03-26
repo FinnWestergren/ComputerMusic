@@ -1,6 +1,6 @@
 package main;
-import calculations.SineWave;
-import calculations.ComplexWave;
+import wave_stuff.ComplexWave;
+import wave_stuff.SineWave;
 
 public class Main {
 	

@@ -1,7 +1,7 @@
 package graphical_assests;
 
-import calculations.Vector2D;
 import processing.core.PApplet;
+import wave_stuff.Vector2D;
 
 public class Slider implements Controller {
 	private PApplet p;
@@ -12,6 +12,7 @@ public class Slider implements Controller {
 	private float minVal,maxVal;
 	private boolean dragging;
 	private String title,units;
+	private boolean continuous,  logarithmic;
 	
 	/**
 	*@param title Title of the controller
@@ -32,6 +33,8 @@ public class Slider implements Controller {
 		this.height = height;
 		this.minVal = minVal;
 		this.maxVal = maxVal;
+		this.continuous = continuous;
+		this.logarithmic = logarithmic;
 		this.faderWidth = width * 0.03f;
 		this.faderHeight = height * 1.2f;
 		this.unitWidth = width/((float) (maxVal - minVal));
@@ -44,6 +47,7 @@ public class Slider implements Controller {
 	
 	@Override
 	public void setCurrentValue(float currentValue) {
+		if(!continuous) currentValue = (float) Math.floor(currentValue);
 		this.currentValue = currentValue;
 		updateFaderLocation();
 	}
@@ -57,7 +61,8 @@ public class Slider implements Controller {
 		p.rect(0, 0, width, height);
 		p.fill(100);
 		p.rect(faderLeft, -(faderHeight - height)/2, faderWidth,faderHeight);
-		p.text(currentValue + " " + units, 0, 40);
+		if(continuous) p.text(currentValue + " " + units, 0, 40);
+		else p.text((int)currentValue + " " + units, 0, 40);
 		p.popMatrix();
 		if(dragging) drag();
 	}
@@ -81,8 +86,8 @@ public class Slider implements Controller {
 	private void updateFaderLocation() {
 		faderLeft = (float) ((currentValue - minVal) * unitWidth - (0.5 * faderWidth));
 	}
-	
-	private void updateCurrentValue() {
+	@Override
+	public void update() {
 		currentValue = minVal + (float) (faderLeft + (0.5 * faderWidth))/unitWidth;
 	}
 
@@ -133,11 +138,13 @@ public class Slider implements Controller {
 	public void drag() {
 		float deltaX = p.mouseX - beginDraggingX;
 		setFaderLocation(deltaX +initDraggingVal );
-		updateCurrentValue();
+		update();
 	}
 
 	@Override
 	public void onMouseReleased() {
 		dragging = false;
 	}
+
+
 }

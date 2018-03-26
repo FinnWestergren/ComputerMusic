@@ -2,11 +2,11 @@ package main;
 
 import java.util.ArrayList;
 
-import calculations.ComplexWave;
-import calculations.SineWave;
-import calculations.Vector2D;
 import graphical_assests.*;
 import processing.core.*;
+import wave_stuff.ComplexWave;
+import wave_stuff.SineWave;
+import wave_stuff.Vector2D;
 
 public class GraphicsMain extends PApplet {
 
@@ -17,8 +17,9 @@ public class GraphicsMain extends PApplet {
 
 	public ArrayList<Drawable> drawList;
 	public static final int FRAMERATE = 60;
-	Visualizer cD;
-	Slider s;
+	
+	Visualizer carrierDisplay,modDisplay;
+	Slider testSlider;
 
 	public void settings() {
 		size(Main.displayWidth / 2, Main.displayHeight);
@@ -27,38 +28,44 @@ public class GraphicsMain extends PApplet {
 	public void setup() {
 		drawList = new ArrayList<Drawable>();
 		frameRate(FRAMERATE);
-		ComplexWave cW = new ComplexWave();
-		SineWave m = new SineWave(10, 1);
-		SineWave o = new SineWave(50, 25,m);
-		cW.addOrbit(o);
-		//cW.addOrbit(new SineWave(100, 50));
-		cD = new Visualizer(cW, new Vector2D(width / 2, height / 2), VisualizerType.CARTESIAN, 500, 200, this);
-		s = new Slider("slide", "Hz", 0.1f, 25, true, false, 500, 20, new Vector2D(100, 100), this);
-		m.setRadiusController(s);
+		ComplexWave carrierTestWave = new ComplexWave(), modTestWave = new ComplexWave();
+		
+		
+		SineWave modulator = new SineWave(500, 100);
+		SineWave carrier = new SineWave(500, 500, modulator);
+		
+		testSlider = new Slider("slide", "Hz", 0.1f, 10000, false, false, 500, 20, new Vector2D(100, 100), this);
+		modulator.setRadiusController(testSlider);
+		
+		carrierTestWave.addOrbit(carrier);
+		modTestWave.addOrbit(modulator);
+		carrierDisplay = new Visualizer(carrierTestWave, new Vector2D(width / 2, height / 2), VisualizerType.CARTESIAN, 500, 200, 500, this);
+		modDisplay = new Visualizer(modTestWave, new Vector2D(width / 2, height / 2), VisualizerType.CARTESIAN, 500, 200, 500, this);
+		
 	}
 
 	public void mousePressed() {
-		s.onMousePressed();
+		testSlider.onMousePressed();
 	}
 
 	public void mouseReleased() {
-		s.onMouseReleased();
+		testSlider.onMouseReleased();
 	}
 
 	public void draw() {
-
-		cD.updatePoints(500, 0);
+		modDisplay.update();
+		carrierDisplay.update();
 		fill(255);
 		stroke(0);
-		
 		rect(0, 0, width, height);
-		s.draw();
+		testSlider.draw();
 		noFill();
-		
 		text("FPS: " + (int) frameRate, 10, 10);
 		stroke(255,0,0);
 		strokeWeight(1.1f);
-		cD.draw();
+		carrierDisplay.draw();
+		stroke(0,255,100);
+		modDisplay.draw();
 		
 	}
 }

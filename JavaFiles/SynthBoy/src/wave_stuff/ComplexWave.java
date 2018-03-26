@@ -1,4 +1,4 @@
-package calculations;
+package wave_stuff;
 
 import java.util.ArrayList;
 
