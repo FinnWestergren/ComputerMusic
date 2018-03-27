@@ -61,9 +61,12 @@ public class Slider implements Controller {
 		p.rect(0, 0, width, height);
 		p.fill(100);
 		p.rect(faderLeft, -(faderHeight - height)/2, faderWidth,faderHeight);
-		if(continuous) p.text(currentValue + " " + units, 0, 40);
-		else p.text((int)currentValue + " " + units, 0, 40);
+		String output = "";
+		if(continuous) output = currentValue + " " + units;
+		else output = (int)(currentValue) + " " + units;
+		p.text(title + ": " + output, 0,40);
 		p.popMatrix();
+		p.noFill();
 		if(dragging) drag();
 	}
 
@@ -100,7 +103,6 @@ public class Slider implements Controller {
 	@Override
 	public void setLocation(Vector2D location) {
 		this.location = location;
-		
 	}
 
 	@Override
@@ -129,8 +131,8 @@ public class Slider implements Controller {
 	}
 
 	private boolean withinSlider(int mouseX, int mouseY) {
-		boolean xSat = ((float) mouseX >= location.getdX() + faderLeft) && ((float) mouseX <= location.getdX() + faderLeft + faderWidth) ;
-		boolean ySat = ((float) mouseY >= location.getdY() + faderTop()) && ((float) mouseY <= location.getdY() + faderTop() + faderHeight) ;
+		boolean xSat = ((float) mouseX >= location.getdX() + faderLeft) && ((float) mouseX <= location.getdX() + faderLeft + faderWidth);
+		boolean ySat = ((float) mouseY >= location.getdY() + faderTop()) && ((float) mouseY <= location.getdY() + faderTop() + faderHeight);
 		return xSat && ySat;
 	}
 
@@ -145,6 +147,4 @@ public class Slider implements Controller {
 	public void onMouseReleased() {
 		dragging = false;
 	}
-
-
 }

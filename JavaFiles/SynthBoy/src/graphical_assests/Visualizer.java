@@ -8,15 +8,15 @@ import processing.core.PApplet;
 import wave_stuff.ComplexWave;
 import wave_stuff.Vector2D;
 
-public class Visualizer implements Drawable, ActionListener {
+public class Visualizer implements Drawable, SliderListener {
 
 	protected ComplexWave complexWave;
 	protected PApplet p;
 	protected Vector2D location;
 	protected Vector2D[] wavePoints;
-	protected float width, height; 
+	protected float width, height, phaseShift; 
 	protected VisualizerType type;
-	private int resolution;
+	private int resolution,periods;
 	private long startTime;
 	private boolean firstUpdate = true;
 
@@ -33,12 +33,15 @@ public class Visualizer implements Drawable, ActionListener {
 	 * @param p
 	 *            reference to the PApplet
 	 */
-	public Visualizer(ComplexWave compWave, Vector2D location, VisualizerType type, float width, float height, int resolution,
-			PApplet p) {
+	public Visualizer(ComplexWave compWave, Vector2D location, VisualizerType type, 
+						float width, float height, float phaseShift,
+						int resolution, int periods, PApplet p) {
 		this.p = p;
 		this.complexWave = compWave;
 		this.width = width;
 		this.height = height;
+		this.phaseShift = phaseShift;
+		this.periods = periods;
 		this.type = type;
 		this.wavePoints = new Vector2D[resolution];
 		this.resolution = resolution;
@@ -75,7 +78,7 @@ public class Visualizer implements Drawable, ActionListener {
 		// cartesian bullshit
 		
 			for (Vector2D v : wavePoints) {
-				if(!firstUpdate) p.curveVertex((float) v.getdX(), (float) v.getdY());
+				if(v != null)p.curveVertex((float) v.getdX(), (float) v.getdY());
 			}
 		 
 		p.endShape();
@@ -93,7 +96,7 @@ public class Visualizer implements Drawable, ActionListener {
 	 */
 	@Override
 	public void update() {
-		double rate = complexWave.period() * 2 / (resolution);
+		double rate = complexWave.period() * periods / resolution;
 		switch (type) {
 		case POLAR:
 			polarPoints(rate);
@@ -115,30 +118,25 @@ public class Visualizer implements Drawable, ActionListener {
 	
 	public void cartesianPoints(double rate) {
 		float separation = width / resolution;
-		for (int projectedTime = 0; projectedTime < resolution; projectedTime++) {
-			double y = complexWave.getPolarLocation(System.currentTimeMillis() - startTime + projectedTime * rate).scale(height/2).getdY();
-			if (firstUpdate) {
-				double x = projectedTime * separation - width / 2;
-				wavePoints[projectedTime] = new Vector2D(x, y);
-				
-			} else {
-				wavePoints[projectedTime].setdY(y);
-			}
+		for (int projectedTime = 0; projectedTime < resolution ; projectedTime++) {
+			double y = complexWave.getPolarLocation( (resolution*phaseShift) + projectedTime * rate).scale(height/2).getdY();
+			double x = projectedTime  * separation - width / 2;
+			wavePoints[projectedTime] = new Vector2D(x, y);
 		}
-		firstUpdate = false;
 	}
 
 	public void polarPoints( double rate) {
 		for (int projectedTime = 0; projectedTime < resolution; projectedTime++) {
-			Vector2D v = complexWave.getPolarLocation(System.currentTimeMillis() - startTime + projectedTime * rate).scale(width/2);
+			Vector2D v = complexWave.getPolarLocation( projectedTime * rate).scale(width/2);
 			wavePoints[projectedTime] =  v;
 		}
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void OnSliderEvent() {
+		update();
 	}
+
+
 
 }

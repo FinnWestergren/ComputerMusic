@@ -28,7 +28,6 @@ public class Main {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
-		GraphicsMain.main(GraphicsMain.class.getName());
-		
+		GraphicsMain.main(GraphicsMain.class.getName());	
 	}
 }

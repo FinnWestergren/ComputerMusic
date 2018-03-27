@@ -29,27 +29,28 @@ public class SineWave {
 	// extending from the center to the edge of the radius given a current time in
 	// the period
 	// actually returns Cartesian vector, but used for the polar display.
+	
 	public Vector2D getPolarLocation(double time) {
 
 		double alphaT = Math.PI * 2 * time * getFrequency();
-		double modulation = 0;
+		double mod = 0;
 		if (modulator != null) {
 			double betaT = Math.PI * 2 * time * modulator.getFrequency();
-			modulation = (modulator.getRadius()/modulator.getFrequency() ) * Math.sin(betaT);
+			mod = (modulator.getRadius()/modulator.getFrequency()) * Math.sin(betaT);
 		}
 
 		double dX = Math.cos(alphaT) * getRadius();
-		double dY = Math.sin(alphaT + modulation) * getRadius();
+		double dY = Math.sin(alphaT + mod) * getRadius();
 
 		return new Vector2D(dX, dY);
 	}
 
 	public double getFrequency() {
-		if(freqController == null) 
+			if(freqController == null) 
 			return frequency;
 			return freqController.getCurrentValue();
 	}
-	
+
 	public double getRadius() {
 		if(radController == null) 
 			return radius;
@@ -59,7 +60,7 @@ public class SineWave {
 	public void setFrequencyController(Controller c) {
 		this.freqController = c;
 	}
-	
+
 	public void setRadiusController(Controller c) {
 		this.radController = c;
 	}
@@ -67,5 +68,7 @@ public class SineWave {
 	public SineWave getModulator() {
 		return modulator;
 	}
+
+
 
 }
