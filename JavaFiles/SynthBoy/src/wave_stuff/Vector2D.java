@@ -11,33 +11,33 @@ import java.lang.Math;
 
 public class Vector2D {
 
-	protected double dX;
+	protected float dX;
 
-	public double getdX() {
+	public float getdX() {
 		return dX;
 	}
 
-	public void setdX(double dX) {
+	public void setdX(float dX) {
 		this.dX = dX;
 	}
 
-	public double getdY() {
+	public float getdY() {
 		return dY;
 	}
 
-	public void setdY(double dY) {
+	public void setdY(float dY) {
 		this.dY = dY;
 	}
 
-	protected double dY;
+	protected float dY;
 
 	// Constructor methods ....
 
 	public Vector2D() {
-		dX = dY = 0.0;
+		dX = dY = 0.0f;
 	}
 
-	public Vector2D(double dX, double dY) {
+	public Vector2D(float dX, float dY) {
 		this.dX = dX;
 		this.dY = dY;
 	}
@@ -70,9 +70,8 @@ public class Vector2D {
 
 	// Scale vector by a constant ...
 
-	public Vector2D scale(double scaleFactor) {
-		Vector2D v2 = new Vector2D(this.dX * scaleFactor, this.dY * scaleFactor);
-		return v2;
+	public void scale(float scaleFactor) {
+		this.dX *= scaleFactor; this.dY *= scaleFactor;
 	}
 
 	// Normalize a vectors length....
@@ -82,8 +81,8 @@ public class Vector2D {
 
 		double length = Math.sqrt(this.dX * this.dX + this.dY * this.dY);
 		if (length != 0) {
-			v2.dX = this.dX / length;
-			v2.dY = this.dY / length;
+			v2.dX = (float) (this.dX / length);
+			v2.dY = (float) (this.dY / length);
 		}
 
 		return v2;

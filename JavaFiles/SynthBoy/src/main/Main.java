@@ -1,5 +1,5 @@
 package main;
-import wave_stuff.ComplexWave;
+import wave_stuff.WaveSet;
 import wave_stuff.SineWave;
 
 public class Main {
@@ -28,6 +28,7 @@ public class Main {
 		displayWidth = Integer.parseInt(args[0]);
 		displayHeight = Integer.parseInt(args[1]);
 		}
-		GraphicsMain.main(GraphicsMain.class.getName());	
+		GraphicsMain.main(GraphicsMain.class.getName());
+		
 	}
 }

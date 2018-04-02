@@ -1,73 +1,42 @@
 package wave_stuff;
-import graphical_assests.Controller;
-public class SineWave {
 
-	private double radius, frequency;
-	private SineWave modulator = null;
-	private Controller freqController, radController;
+public class SineWave extends Wave {
 
+	
 	public SineWave(Vector2D polarVect) {
-		this.radius = polarVect.dX;
-		this.frequency = polarVect.dY;
+		super(polarVect);
+		
 	}
 
-	public SineWave(double radius, double frequency) {
-		super();
-		this.radius = radius;
-		this.frequency = frequency;
+	public SineWave(float radius, float frequency) {
+		super(radius,frequency);
+		
 	}
 
-	public SineWave(double radius, double frequency, SineWave modulator) {
-		super();
-		this.radius = radius;
-		this.frequency = frequency;
-		this.modulator = modulator;
-	}
+
 
 	// used to find the tip of the arm (or the satellite, if you think about
 	// planetary motion)
 	// extending from the center to the edge of the radius given a current time in
 	// the period
 	// actually returns Cartesian vector, but used for the polar display.
-	
-	public Vector2D getPolarLocation(double time) {
+	@Override
+	public Vector2D getPolarLocation(float time) {
 
-		double alphaT = Math.PI * 2 * time * getFrequency();
-		double mod = 0;
-		if (modulator != null) {
-			double betaT = Math.PI * 2 * time * modulator.getFrequency();
-			mod = (modulator.getRadius()/modulator.getFrequency()) * Math.sin(betaT);
+		float alphaT = (float) (Math.PI * 2 * time * getFrequency());
+		float mod = 0;
+		if (modulator != null && modulator.getFrequency() != 0) {
+			float betaT = (float) (Math.PI * 2 * time * modulator.getFrequency());
+			mod = (float) ((modulator.getAmplitude()/modulator.getFrequency()) * Math.sin(betaT));
 		}
 
-		double dX = Math.cos(alphaT) * getRadius();
-		double dY = Math.sin(alphaT + mod) * getRadius();
+		float dX = (float) (Math.cos(alphaT ) * getAmplitude());
+		float dY = (float) (Math.sin(alphaT + mod) * getAmplitude());
 
 		return new Vector2D(dX, dY);
 	}
 
-	public double getFrequency() {
-			if(freqController == null) 
-			return frequency;
-			return freqController.getCurrentValue();
-	}
 
-	public double getRadius() {
-		if(radController == null) 
-			return radius;
-			return radController.getCurrentValue();
-	}
-
-	public void setFrequencyController(Controller c) {
-		this.freqController = c;
-	}
-
-	public void setRadiusController(Controller c) {
-		this.radController = c;
-	}
-
-	public SineWave getModulator() {
-		return modulator;
-	}
 
 
 

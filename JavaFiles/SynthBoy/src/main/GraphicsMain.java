@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import graphical_assests.*;
 import processing.core.*;
-import wave_stuff.ComplexWave;
+import wave_stuff.WaveSet;
 import wave_stuff.SineWave;
 import wave_stuff.Vector2D;
 
@@ -17,6 +17,7 @@ public class GraphicsMain extends PApplet {
 
 	public ArrayList<Drawable> drawList;
 	public static final int FRAMERATE = 60;
+	public static PApplet pApplet ;
 	
 	Visualizer polarDisplayTest,cartDisplayTest;
 	private ArrayList<Controller> controllerSet = new ArrayList<Controller>();
@@ -26,29 +27,29 @@ public class GraphicsMain extends PApplet {
 	}
 
 	public void setup() {
+		pApplet = this;
 		drawList = new ArrayList<Drawable>();
 		frameRate(FRAMERATE);
-		ComplexWave carrierTestWave = new ComplexWave(), modTestWave = new ComplexWave();
-		
-		
+		WaveSet carrierTestWave = new WaveSet(), modTestWave = new WaveSet();
 		SineWave modulator = new SineWave(0, 200);
-		SineWave carrier = new SineWave(800, 800, modulator);
+		SineWave carrier = new SineWave(800, 800);
+		carrier.setModulator(modulator);
 		
-		controllerSet.add(new Slider("modulation amplitude", "+/- Hz", 0, 100, false, false, 500, 20, new Vector2D(100, 50), this));
-		controllerSet.add(new Slider("modulation frequency", "Hz", 10, 100, false, false, 500, 20, new Vector2D(100, 100), this));
-		controllerSet.add(new Slider("carrier amplitude", "", 1, 30, false, false, 500, 20, new Vector2D(100, 150), this));
-		controllerSet.add(new Slider("carrier frequency", "Hz", 10, 100, false, false, 500, 20, new Vector2D(100, 200), this));
+		controllerSet.add(new Slider("modulation amplitude", "+/- Hz", 0, 20000, false, false, 500, 20, new Vector2D(100, 50), this));
+		controllerSet.add(new Slider("modulation frequency", "Hz", 0, 20000, false, false, 500, 20, new Vector2D(100, 100), this));
+		controllerSet.add(new Slider("carrier amplitude", "", 0, 100, false, false, 500, 20, new Vector2D(100, 150), this));
+		controllerSet.add(new Slider("carrier frequency", "Hz", 0, 20000, false, false, 500, 20, new Vector2D(100, 200), this));
 		
 		
-		modulator.setRadiusController(controllerSet.get(0));
+		modulator.setAmplitudeController(controllerSet.get(0));
 		modulator.setFrequencyController(controllerSet.get(1));
-		carrier.setRadiusController(controllerSet.get(2));
+		carrier.setAmplitudeController(controllerSet.get(2));
 		carrier.setFrequencyController(controllerSet.get(3));
 		
 		carrierTestWave.addOrbit(carrier);
 		modTestWave.addOrbit(modulator);
-		polarDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height*1.3 / 2), VisualizerType.POLAR, 500, 200,0, 500,3, this);
-		cartDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height*1.3 / 2), VisualizerType.CARTESIAN, 500, 200,0, 500,4, this);
+		polarDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height*1.6f / 2), VisualizerType.POLAR, 500, 200,0, 500,6, this);
+		cartDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height / 2), VisualizerType.CARTESIAN, 500, 200,0, 500,10, this);
 		
 	}
 
@@ -75,7 +76,7 @@ public class GraphicsMain extends PApplet {
 		}
 		noFill();
 		text("FPS: " + (int) frameRate, 10, 10);
-		stroke(255,0,0);
+		stroke(255,100,160);
 		strokeWeight(1.1f);
 		polarDisplayTest.draw();
 		stroke(0,255,100);

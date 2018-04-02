@@ -38,8 +38,6 @@ public class Slider implements Controller {
 		this.faderWidth = width * 0.03f;
 		this.faderHeight = height * 1.2f;
 		this.unitWidth = width/((float) (maxVal - minVal));
-		
-	
 		setLocation(location);
 		setCurrentValue(0);
 		
@@ -47,13 +45,14 @@ public class Slider implements Controller {
 	
 	@Override
 	public void setCurrentValue(float currentValue) {
-		if(!continuous) currentValue = (float) Math.floor(currentValue);
 		this.currentValue = currentValue;
 		updateFaderLocation();
 	}
 	
 	@Override
 	public void draw() {
+		if(dragging) drag();
+		else updateFaderLocation();
 		if(currentValue > maxVal) setCurrentValue(maxVal);
 		if(currentValue < minVal) setCurrentValue(minVal);
 		p.pushMatrix();
@@ -67,7 +66,7 @@ public class Slider implements Controller {
 		p.text(title + ": " + output, 0,40);
 		p.popMatrix();
 		p.noFill();
-		if(dragging) drag();
+		
 	}
 
 	@Override
@@ -145,6 +144,10 @@ public class Slider implements Controller {
 
 	@Override
 	public void onMouseReleased() {
+		if(!continuous) {
+			this.currentValue = (float) Math.floor(currentValue);
+		}
+		updateFaderLocation();
 		dragging = false;
 	}
 }

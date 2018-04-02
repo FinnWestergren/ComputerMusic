@@ -5,20 +5,18 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
-import wave_stuff.ComplexWave;
+import wave_stuff.WaveSet;
 import wave_stuff.Vector2D;
 
 public class Visualizer implements Drawable, SliderListener {
 
-	protected ComplexWave complexWave;
+	protected WaveSet complexWave;
 	protected PApplet p;
 	protected Vector2D location;
 	protected Vector2D[] wavePoints;
 	protected float width, height, phaseShift; 
 	protected VisualizerType type;
 	private int resolution,periods;
-	private long startTime;
-	private boolean firstUpdate = true;
 
 	/**
 	 * 
@@ -33,7 +31,7 @@ public class Visualizer implements Drawable, SliderListener {
 	 * @param p
 	 *            reference to the PApplet
 	 */
-	public Visualizer(ComplexWave compWave, Vector2D location, VisualizerType type, 
+	public Visualizer(WaveSet compWave, Vector2D location, VisualizerType type, 
 						float width, float height, float phaseShift,
 						int resolution, int periods, PApplet p) {
 		this.p = p;
@@ -45,11 +43,10 @@ public class Visualizer implements Drawable, SliderListener {
 		this.type = type;
 		this.wavePoints = new Vector2D[resolution];
 		this.resolution = resolution;
-		startTime = System.currentTimeMillis();
 		setLocation(location);
 	}
 
-	public void setWave(ComplexWave CW) {
+	public void setWave(WaveSet CW) {
 		this.complexWave = CW;
 	}
 
@@ -96,7 +93,7 @@ public class Visualizer implements Drawable, SliderListener {
 	 */
 	@Override
 	public void update() {
-		double rate = complexWave.period() * periods / resolution;
+		float rate = complexWave.period() * periods / resolution;
 		switch (type) {
 		case POLAR:
 			polarPoints(rate);
@@ -116,19 +113,32 @@ public class Visualizer implements Drawable, SliderListener {
 	 * 
 	 */
 	
-	public void cartesianPoints(double rate) {
+	public void cartesianPoints(float rate) {
 		float separation = width / resolution;
+		float maxAmp = 0;
 		for (int projectedTime = 0; projectedTime < resolution ; projectedTime++) {
-			double y = complexWave.getPolarLocation( (resolution*phaseShift) + projectedTime * rate).scale(height/2).getdY();
-			double x = projectedTime  * separation - width / 2;
+			float y = complexWave.getPolarLocation( (resolution*phaseShift) + projectedTime * rate).getdY();
+			if(Math.abs(y) > maxAmp) maxAmp = (float) Math.abs(y);
+			float x = projectedTime  * separation - width / 2;
 			wavePoints[projectedTime] = new Vector2D(x, y);
+			
+		}
+		if(maxAmp > height/2) {
+			for(Vector2D t : wavePoints)
+				t.setdY(t.getdY() * (height/(2*maxAmp))); 
 		}
 	}
 
-	public void polarPoints( double rate) {
+	public void polarPoints( float rate) {
+		float maxAmp = 0;
 		for (int projectedTime = 0; projectedTime < resolution; projectedTime++) {
-			Vector2D v = complexWave.getPolarLocation( projectedTime * rate).scale(width/2);
+			Vector2D v = complexWave.getPolarLocation( projectedTime * rate);
+			if(Math.abs(v.getdY()) > maxAmp) maxAmp = Math.abs(v.getdY());
 			wavePoints[projectedTime] =  v;
+		}
+		if(maxAmp > height/2) {
+			for(Vector2D t : wavePoints)
+				t.scale(height/(2*maxAmp));
 		}
 	}
 
