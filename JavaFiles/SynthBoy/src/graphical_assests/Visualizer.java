@@ -15,6 +15,7 @@ public class Visualizer implements Drawable, SliderListener {
 	protected Vector2D location;
 	protected Vector2D[] wavePoints;
 	protected float width, height, phaseShift; 
+	static float scaleFactor = 200;
 	protected VisualizerType type;
 	private int resolution,periods;
 
@@ -117,7 +118,7 @@ public class Visualizer implements Drawable, SliderListener {
 		float separation = width / resolution;
 		float maxAmp = 0;
 		for (int projectedTime = 0; projectedTime < resolution ; projectedTime++) {
-			float y = complexWave.getPolarLocation( (resolution*phaseShift) + projectedTime * rate).getdY();
+			float y = complexWave.getPolarLocation( (resolution*phaseShift) + projectedTime * rate).getdY() * scaleFactor;
 			if(Math.abs(y) > maxAmp) maxAmp = (float) Math.abs(y);
 			float x = projectedTime  * separation - width / 2;
 			wavePoints[projectedTime] = new Vector2D(x, y);
@@ -133,6 +134,7 @@ public class Visualizer implements Drawable, SliderListener {
 		float maxAmp = 0;
 		for (int projectedTime = 0; projectedTime < resolution; projectedTime++) {
 			Vector2D v = complexWave.getPolarLocation( projectedTime * rate);
+			v.scale(scaleFactor);
 			if(Math.abs(v.getdY()) > maxAmp) maxAmp = Math.abs(v.getdY());
 			wavePoints[projectedTime] =  v;
 		}

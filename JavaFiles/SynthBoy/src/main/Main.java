@@ -1,5 +1,6 @@
 package main;
 import wave_stuff.WaveSet;
+import sound.OscillatorManager;
 import wave_stuff.SineWave;
 
 public class Main {
@@ -29,6 +30,5 @@ public class Main {
 		displayHeight = Integer.parseInt(args[1]);
 		}
 		GraphicsMain.main(GraphicsMain.class.getName());
-		
 	}
 }

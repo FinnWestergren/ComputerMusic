@@ -4,5 +4,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="Lib/core.jar"/>
 	<classpathentry kind="lib" path="Lib/minim.jar"/>
+	<classpathentry kind="lib" path="Lib/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="Lib/tritonus_aos.jar"/>
+	<classpathentry kind="lib" path="Lib/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="Lib/jsminim.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
