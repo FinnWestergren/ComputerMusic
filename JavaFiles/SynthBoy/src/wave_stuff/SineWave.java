@@ -21,23 +21,23 @@ public class SineWave extends Wave {
 	// the period
 	// actually returns Cartesian vector, but used for the polar display.
 	@Override
-	public Vector2D getPolarLocation(float time) {
+	public float getCurrentAmplitude(float time) {
+		float tau = (float) (Math.PI * 2);
+		float alphaT = tau * frequency * time;
+		float modIndex = 0;
+		float betaT = 0;
+		if(modulator != null) {
 
-		float alphaT = (float) (Math.PI * 2 * time * getFrequency());
-		float mod = 0;
-		if (modulator != null && modulator.getFrequency() != 0) {
-			float betaT = (float) (Math.PI * 2 * time * modulator.getFrequency());
-			mod = (float) ((modulator.getAmplitude()/modulator.getFrequency()) * Math.sin(betaT));
+			betaT = tau * modulator.getCurrentFrequency(time) * time;
+			if(modulator.getCurrentFrequency(time) != 0)
+				modIndex = (modulator.getCurrentAmplitude(time)/modulator.getCurrentFrequency(time));
 		}
-
-		float dX = (float) (Math.cos(alphaT ) * getAmplitude());
-		float dY = (float) (Math.sin(alphaT + mod) * getAmplitude());
-
-		return new Vector2D(dX, dY);
+		return (float)(getAmplitude() * Math.sin(alphaT + modIndex * Math.sin(betaT)));
 	}
-
-
-
-
-
+	
+	@Override
+	public float getCurrentFrequency(float time) {
+		if(modulator == null) return frequency;
+		return frequency + modulator.getCurrentAmplitude(time);
+	}
 }

@@ -7,10 +7,12 @@ import listeners.ControllerListener;
 
 public class Wave implements ControllerListener{
 
-	protected float amplitude, frequency;
+	protected float amplitude, frequency, baseFrequency;
 	protected Wave modulator = null;
 	protected Controller freqController, ampController;
 	private Oscil osc;
+	private boolean  patched;
+	private Wave modulating;
 
 	public Wave(Vector2D polarVect) {
 		this(polarVect.dX, polarVect.dY);
@@ -18,10 +20,12 @@ public class Wave implements ControllerListener{
 
 	public Wave(float amplitude, float frequency) {
 		this.amplitude = amplitude;
+		this.baseFrequency = frequency;
 		this.frequency = frequency;
 		osc = new Oscil(frequency, amplitude, Waves.SINE);
 		
 	}
+
 
 	public Oscil getOsc() {
 		return osc;
@@ -34,7 +38,7 @@ public class Wave implements ControllerListener{
 	}
 
 	public float getBaseFrequency() {
-		return frequency;
+		return baseFrequency;
 	}
 
 	public float getAmplitude() {
@@ -42,16 +46,21 @@ public class Wave implements ControllerListener{
 			return amplitude;
 		return ampController.getCurrentValue();
 	}
+	
+	public void setModulating(Wave modulating) {
+		this.modulating = modulating;
+	}
 
 	public void setModulator(Wave modulator) {
 		this.modulator = modulator;
+		modulator.setModulating(this);
 		modulator.getOsc().offset.setLastValue(frequency);
 		modulator.getOsc().patch(osc.frequency);
 	}
 
-	public Vector2D getPolarLocation(float time) {
+	public float getCurrentAmplitude(float time) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	public void setFrequencyController(Controller c) {
@@ -80,18 +89,45 @@ public class Wave implements ControllerListener{
 		{
 			setAmplitude(ampController.getCurrentValue());
 		}
+		
+		if(modulating != null) {
+			modulating.onModulatorChange();
+		}
+		
 	}
 
 	private void setFrequency(float freq) {
 		this.frequency = freq;
 		this.osc.setFrequency(frequency);
-		if(modulator != null)
+		if(modulator != null) {
 		modulator.getOsc().offset.setLastValue(frequency);
+			
+			
+		}
 	}
 	
 	private void setAmplitude(float amp) {
 		this.amplitude = amp;
 		this.osc.setAmplitude(amplitude);
+	}
+	
+	private void onModulatorChange() {
+		if(modulator == null) return;
+		if(modulator.getFrequency() == 0) {
+			modulator.getOsc().unpatch(osc);
+			setFrequency(frequency);
+			patched = false;
+		}
+		else if(!patched) {
+			modulator.getOsc().offset.setLastValue(frequency);
+			modulator.getOsc().patch(osc.frequency);
+			patched = true;
+		}
+	}
+
+	public float getCurrentFrequency(float time) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

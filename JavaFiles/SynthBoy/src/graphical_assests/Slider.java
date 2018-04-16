@@ -62,7 +62,7 @@ public class Slider implements Controller {
 		updateFaderLocation();
 		if (controllerListener != null) {
 			controllerListener.onChange(signature);
-			System.out.println("currentValue: " + currentValue);
+			
 		}
 	}
 
