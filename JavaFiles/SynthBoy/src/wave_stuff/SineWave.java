@@ -27,7 +27,6 @@ public class SineWave extends Wave {
 		float modIndex = 0;
 		float betaT = 0;
 		if(modulator != null) {
-
 			betaT = tau * modulator.getCurrentFrequency(time) * time;
 			if(modulator.getCurrentFrequency(time) != 0)
 				modIndex = (modulator.getCurrentAmplitude(time)/modulator.getCurrentFrequency(time));
@@ -37,7 +36,7 @@ public class SineWave extends Wave {
 	
 	@Override
 	public float getCurrentFrequency(float time) {
-		if(modulator == null) return frequency;
+		if(modulator == null || modulator.getFrequency() == 0) return frequency;
 		return frequency + modulator.getCurrentAmplitude(time);
 	}
 }
