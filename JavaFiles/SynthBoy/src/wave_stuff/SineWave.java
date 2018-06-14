@@ -22,6 +22,7 @@ public class SineWave extends Wave {
 	// actually returns Cartesian vector, but used for the polar display.
 	@Override
 	public float getCurrentAmplitude(float time) {
+		if(frequency == 0) return 0;
 		float tau = (float) (Math.PI * 2);
 		float alphaT = tau * frequency * time;
 		float modIndex = 0;
@@ -36,7 +37,7 @@ public class SineWave extends Wave {
 	
 	@Override
 	public float getCurrentFrequency(float time) {
-		if(modulator == null || modulator.getFrequency() == 0) return frequency;
+		if(modulator == null) return frequency;
 		return frequency + modulator.getCurrentAmplitude(time);
 	}
 }

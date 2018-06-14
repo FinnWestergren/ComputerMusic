@@ -31,18 +31,18 @@ public class GraphicsMain extends PApplet {
 		drawList = new ArrayList<Drawable>();
 		frameRate(FRAMERATE);
 		WaveSet carrierTestWave = new WaveSet(), modTestWave = new WaveSet(), mod2TestWave = new WaveSet();
-		SineWave modulator = new SineWave(0, 0);
-		SineWave mod2 = new SineWave(0,0);
-		SineWave carrier = new SineWave(0, 0);
+		SineWave modulator = 	new SineWave(0,0);
+		SineWave mod2 = 		new SineWave(0,0);
+		SineWave carrier = 		new SineWave(0,0);
 		carrier.setModulator(modulator);
 		modulator.setModulator(mod2);
 		
-		controllerSet.add(new Slider("modulation2 amplitude", "+/- Hz", 0, 10000, false, false, 500, 20, new Vector2D(100, 50), this));
-		controllerSet.add(new Slider("modulation2 frequency", "Hz", 0, 10000, false, false, 500, 20, new Vector2D(100, 100), this));
-		controllerSet.add(new Slider("modulation amplitude", "+/- Hz", 0, 10000, false, false, 500, 20, new Vector2D(100, 150), this));
-		controllerSet.add(new Slider("modulation frequency", "Hz", 0, 10000, false, false, 500, 20, new Vector2D(100, 200), this));
+		controllerSet.add(new Slider("modulation2 amplitude", "+/- Hz", 0, 1000, true, false, 500, 20, new Vector2D(100, 50), this));
+		controllerSet.add(new Slider("modulation2 frequency", "Hz", 0, 1000, false, false, 500, 20, new Vector2D(100, 100), this));
+		controllerSet.add(new Slider("modulation amplitude", "+/- Hz", 0, 1000, false, false, 500, 20, new Vector2D(100, 150), this));
+		controllerSet.add(new Slider("modulation frequency", "Hz", 0, 1000, false, false, 500, 20, new Vector2D(100, 200), this));
 		controllerSet.add(new Slider("carrier amplitude", "", 0, 1.0f, true, false, 500, 20, new Vector2D(100, 250), this));
-		controllerSet.add(new Slider("carrier frequency", "Hz", 0, 10000, false, false, 500, 20, new Vector2D(100, 300), this));
+		controllerSet.add(new Slider("carrier frequency", "Hz", 0, 1000, false, false, 500, 20, new Vector2D(100, 300), this));
 		
 		mod2.setAmplitudeController(controllerSet.get(0));
 		mod2.setFrequencyController(controllerSet.get(1));
@@ -55,9 +55,11 @@ public class GraphicsMain extends PApplet {
 		modTestWave.addOrbit(modulator);
 		mod2TestWave.addOrbit(mod2);
 		
-		polarDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height*1.6f / 2), VisualizerType.POLAR, 500, 200,0, 500,6, this);
+		polarDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height*1.6f / 2), VisualizerType.POLAR, 500, 200,0, 500,12, this);
 		cartDisplayTest = new Visualizer(carrierTestWave, new Vector2D(width / 2, height *1.6f/2), VisualizerType.CARTESIAN, 500, 200,0, 500,2, this);
 		o.patchWaveSet(carrierTestWave);
+		
+		modulator.latch();
 	}
 
 	public void mousePressed() {
